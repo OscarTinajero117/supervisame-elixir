@@ -1,7 +1,7 @@
 defmodule Supervisame.Calculadora do
     use GenServer
 
-    def start_link, do: GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
+    def start_link([]), do: GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
 
     def add(a, b), do: GenServer.call(__MODULE__, {:add, a, b})
     def sub(a, b), do: GenServer.call(__MODULE__, {:sub, a, b})

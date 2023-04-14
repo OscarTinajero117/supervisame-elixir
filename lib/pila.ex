@@ -3,7 +3,7 @@ defmodule Supervisame.Pila do
 
     alias Supervisame.Calculadora
 
-    def start_link, do: GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
+    def start_link([]), do: GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
 
     def push(value), do: GenServer.call(__MODULE__, {:push, value})
 

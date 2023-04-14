@@ -1,12 +1,12 @@
 defmodule Supervisame.Calculadora do
     use GenServer
 
-    def start_link, do: GenServer.start_link(__MODULE__, :ok)
+    def start_link, do: GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
 
-    def add(pid, a, b), do: GenServer.call(pid, {:add, a, b})
-    def sub(pid, a, b), do: GenServer.call(pid, {:sub, a, b})
-    def mul(pid, a, b), do: GenServer.call(pid, {:mul, a, b})
-    def div(pid, a, b), do: GenServer.call(pid, {:div, a, b})
+    def add(a, b), do: GenServer.call(__MODULE__, {:add, a, b})
+    def sub(a, b), do: GenServer.call(__MODULE__, {:sub, a, b})
+    def mul(a, b), do: GenServer.call(__MODULE__, {:mul, a, b})
+    def div(a, b), do: GenServer.call(__MODULE__, {:div, a, b})
 
     def init(:ok) do
         IO.puts("[Calculadora] Iniciando GenServer")

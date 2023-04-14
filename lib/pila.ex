@@ -3,41 +3,41 @@ defmodule Supervisame.Pila do
 
     alias Supervisame.Calculadora
 
-    def start_link, do: GenServer.start_link(__MODULE__, :ok)
+    def start_link, do: GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
 
-    def push(pid, value), do: GenServer.call(pid, {:push, value})
+    def push(value), do: GenServer.call(__MODULE__, {:push, value})
 
-    def init(calc) do
+    def init(:ok) do
         IO.puts("[Pila] Iniciando GenServer")
-        {:ok, {calc, []}}
+        {:ok, []}
     end
 
-    def handle_call({:push, :add}, _from, {calc, [a, b | stack]}) do
+    def handle_call({:push, :add}, _from, [a, b | stack]) do
         IO.puts "[Pila] Push ADD"
-        result = Calculadora.add(calc, a, b)
-        {:reply, result, {calc, [result | stack]}}
+        result = Calculadora.add(a, b)
+        {:reply, result, [result | stack]}
     end
 
-    def handle_call({:push, :sub}, _from, {calc, [a, b | stack]}) do
+    def handle_call({:push, :sub}, _from, [a, b | stack]) do
         IO.puts "[Pila] Push SUB"
-        result = Calculadora.sub(calc, a, b)
-        {:reply, result, {calc, [result | stack]}}
+        result = Calculadora.sub(a, b)
+        {:reply, result, [result | stack]}
     end
 
-    def handle_call({:push, :mul}, _from, {calc, [a, b | stack]}) do
+    def handle_call({:push, :mul}, _from, [a, b | stack]) do
         IO.puts "[Pila] Push MUL"
-        result = Calculadora.mul(calc, a, b)
-        {:reply, result, {calc, [result | stack]}}
+        result = Calculadora.mul(a, b)
+        {:reply, result, [result | stack]}
     end
 
-    def handle_call({:push, :div}, _from, {calc, [a, b | stack]}) do
+    def handle_call({:push, :div}, _from, [a, b | stack]) do
         IO.puts "[Pila] Push DIV"
-        result = Calculadora.div(calc, a, b)
-        {:reply, result, {calc, [result | stack]}}
+        result = Calculadora.div(a, b)
+        {:reply, result, [result | stack]}
     end
 
-    def handle_call({:push, value}, _from, {calc, stack}) when is_number(value) do
+    def handle_call({:push, value}, _from, stack) when is_number(value) do
         IO.puts "[Pila] Push #{value}"
-        {:reply, value, {calc, [value | stack]}}
+        {:reply, value, [value | stack]}
     end
 end
